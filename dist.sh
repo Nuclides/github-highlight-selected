@@ -10,7 +10,7 @@ cd `basename $PACKAGED_PATH`
 rm -rf .git
 rm dist.sh
 rm .gitignore
-rm TODO.txt
+rm -rf Assets
 rm .DS_Store
 cd /tmp
 zip -r $APP_NAME.zip `basename $PACKAGED_PATH`

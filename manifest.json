@@ -1,0 +1,26 @@
+{
+  "name": "GitHub Highlight Selected",
+  "version": "0.1",
+  "manifest_version": 2,
+
+  "description": "",
+  // "icons": {
+  //   "16": "icon16.png",
+  //   "32": "icon32.png",
+  //   "48": "icon48.png",
+  //   "128": "icon128.png",
+  //   "256": "icon256.png"
+  // },
+
+  "content_scripts": [ {
+    "js": [ "src/jquery-2.1.1.min.js", "src/highlight-selected.js" ],
+    "css": [ "src/style.css" ],
+    "matches": [ "https://github.com/*" ]
+  } ],
+  "minimum_chrome_version": "20",
+  "permissions": [
+    "<all_urls>"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}

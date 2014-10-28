@@ -1,0 +1,7 @@
+/* ghs is the prefix for github-highlight-selected */
+
+.ghs-highlight,
+.ghs-partial-highlight {
+    border: 1px solid rgba(255, 181, 21, .6);
+    background-color: rgba(255, 181, 21, .3);
+}

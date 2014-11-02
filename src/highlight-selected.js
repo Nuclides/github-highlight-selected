@@ -9,7 +9,7 @@ $(function () {
 
         var selection = $.trim(window.getSelection());
         if (selection) {
-            var codeArea = $(".file-box");
+            var codeArea = $(".js-file-line-container");
             codeArea.find("span:not(:has(*))").each(function () {
                 if (this != e.target) {
                     if ($(this).text() == selection) {

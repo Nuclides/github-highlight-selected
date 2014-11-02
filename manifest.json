@@ -5,8 +5,8 @@
 
   "description": "Highlight selected word in GitHub source view like Sublime Text",
   "icons": {
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "48": "icon-48.png",
+    "128": "icon-128.png"
   },
 
   "content_scripts": [ {

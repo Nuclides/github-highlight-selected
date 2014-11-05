@@ -10,7 +10,7 @@ $(function () {
         var selection = $.trim(window.getSelection());
         if (selection) {
             var codeArea = $(".js-file-line-container");
-            codeArea.find("td.blob-code.js-file-line").each(function () {
+            codeArea.find("span:not(:has(*))").each(function () {
                 if (this != e.target) {
                     if ($(this).text() == selection) {
                         $(this).addClass("ghs-highlight");

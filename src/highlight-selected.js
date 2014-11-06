@@ -1,4 +1,11 @@
 $(function () {
+    var codeArea = $(".js-file-line-container");
+    codeArea.find(".js-file-line").contents().filter(function () {
+        return this.nodeType == Node.TEXT_NODE;
+    }).each(function () {
+        $(this).replaceWith('<span>' + $(this).text() + '</span>');
+    });
+
     function restore() {
         $(".ghs-highlight").removeClass("ghs-highlight");
         $(".ghs-partial-highlight").contents().unwrap();
@@ -12,15 +19,8 @@ $(function () {
         restore();
 
         var selection = $.trim(window.getSelection());
+
         if (selection) {
-            var codeArea = $(".js-file-line-container");
-            codeArea.find(".js-file-line").contents().filter(function () {
-                return this.nodeType == Node.TEXT_NODE;
-            }).each(function () {
-                if (this != e.target && $(this).text().indexOf(selection) > -1) {
-                    $(this).replaceWith('<span>' + $(this).text() + '</span>');
-                }
-            });
             codeArea.find("span:not(:has(*))").each(function () {
                 if (this != e.target) {
                     if ($(this).text() == selection) {

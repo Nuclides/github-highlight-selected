@@ -15,7 +15,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.2</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
 	<key>Chrome</key>
 	<dict/>
 	<key>Content</key>
@@ -61,7 +61,7 @@
 		</dict>
 	</dict>
 	<key>Update Manifest URL</key>
-	<string>https://github.com/Nuclides/github-highlight-selected/blob/master/Update.plist</string>
+	<string>https://raw.githubusercontent.com/Nuclides/github-highlight-selected/master/Update.plist</string>
 	<key>Website</key>
 	<string>https://github.com/Nuclides/github-highlight-selected</string>
 </dict>

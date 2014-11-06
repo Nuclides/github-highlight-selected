@@ -4,6 +4,10 @@ $(function () {
         $(".ghs-partial-highlight").contents().unwrap();
     }
 
+    function replaceAll(str, target, replacement) {
+        return str.split(target).join(replacement);
+    }
+
     $("body").mouseup(function (e) {
         restore();
 
@@ -24,8 +28,7 @@ $(function () {
                     }
                     else if ($(this).text().indexOf(selection) > -1) {
                         $(this).html(function(_, html) {
-                            var re = new RegExp(selection, "g");
-                            return html.replace(re, '<span class="ghs-partial-highlight">' + selection + '</span>');
+                            return replaceAll(html, selection, '<span class="ghs-partial-highlight">' + selection + '</span>');
                         });
                     }
                 }

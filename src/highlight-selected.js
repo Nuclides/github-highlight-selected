@@ -1,5 +1,4 @@
 window.addEventListener('load', function() {
-// (function(){
     var fileLineContainer = '.js-file-line-container';
     var lastPage = location.href;
     var textNodes = [];
@@ -7,7 +6,8 @@ window.addEventListener('load', function() {
     var highlightedIndex;
 
     function wrapTextNodes(query) {
-        // Why did all the gawd dam text selection stuff fail, urgggggghh....atleast this worked!   http://cwestblog.com/2014/03/14/javascript-getting-all-text-nodes/
+        // Why did all the gawd dam text selection stuff fail, urgggggghh....at least this worked!
+        // http://cwestblog.com/2014/03/14/javascript-getting-all-text-nodes/
         function getTextNodesIn(elem, opt_fnFilter) {
             if (elem) {
                 for (var nodes = elem.childNodes, i = nodes.length; i--;) {
@@ -192,33 +192,29 @@ window.addEventListener('load', function() {
         var heightRatio = canvasHeight / document.documentElement.getBoundingClientRect().height;
 
         canvas.style.display = 'block';
-
-        //         canvas.height = document.documentElement.getBoundingClientRect().height;
         canvas.height = canvasHeight;
-
         canvas.width = 20;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(0,0,0,0.1)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "rgba(255, 181, 21, .3)";
-        var lastY = -1,
-            y = 0;
+        var lastY = -1;
+        var y = 0;
         highlighted.forEach(function(el, index) {
             var box = el.getBoundingClientRect();
             y = (((window.scrollY + box.top) * heightRatio) + 0.5) | 0;
             if (y == lastY && index != highlightedIndex) return;
 
-            if (index == highlightedIndex) ctx.fillStyle = "rgba(0, 0, 255, 1)";
-            else ctx.fillStyle = "rgba(255, 181, 21, 1)";
+            if (index == highlightedIndex) ctx.fillStyle = "rgba(54, 149, 230, 1)";
+            else ctx.fillStyle = "rgba(241, 209, 47, 1)";
             ctx.fillRect(0, y, canvas.width, (((box.height * heightRatio) + .5) | 0) || 1);
             lastY = y;
         })
-        ctx.fillStyle = "rgba(0,0,0,0.0)";
+
+        var y1 = ((window.scrollY * heightRatio) + .5) | 0;
+        var y2 = ((canvasHeight * heightRatio) + .5) | 0;
+        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+        ctx.fillRect(0, y1, canvas.width, y2);
         ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(0,200,200,0.85)";
-        ctx.strokeRect(0, ((window.scrollY * heightRatio) + 0.5) | 0, canvas.width, ((canvasHeight * heightRatio) + .5) | 0);
+        ctx.strokeStyle = "rgba(204, 204, 204, 1)";
+        ctx.strokeRect(0, y1, canvas.width, y2);
         canvasUpdating = false;
     }
 
@@ -244,7 +240,9 @@ window.addEventListener('load', function() {
 }
 
 #ghs-bar {
-    width: 20px;
+    width: 16px;
+    border-left: 1px solid #ccc;
+    background-color: #f3f3f3;
     position: fixed;
     top: 0px;
     bottom: 0px;

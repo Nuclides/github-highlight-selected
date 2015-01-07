@@ -1,4 +1,4 @@
-(function() {
+window.addEventListener('load', function() {
 
     var fileLineContainer = '.js-file-line-container';
     var lastPage = location.href;
@@ -97,14 +97,39 @@
         if (selected) selectElement(selected);
     }
 
+    var canvasDraggin = false;
+
     document.body.addEventListener('mousedown', function(e) {
-        if (e.which != 1 || highlighted.length == 0) return;
+        if (e.target == canvas && e.which===1) {
+            canvasDraggin = true;
+            var box=document.documentElement.getBoundingClientRect();
+            var heightRatio = box.height / window.innerHeight;
+            var half= window.innerHeight/2 ;
+            document.body.scrollTop = (e.y * heightRatio)-half;
+            window.addEventListener('mousemove', canvasDragger);
+            return;
+        }
+        if (e.which != 1 || highlighted.length == 0 || e.target == canvas) return;
         restore();
         canvas.style.display = 'none';
     });
 
+    function canvasDragger(e) {
+        if (!canvasDraggin) return;
+        var heightRatio = document.documentElement.getBoundingClientRect().height / window.innerHeight;
+        var half= window.innerHeight/2 ;
+        document.body.scrollTop = (e.y * heightRatio)-half;
+        e.preventDefault();
+        return false;
+    }
+
     document.body.addEventListener('mouseup', function(e) {
         if (e.which != 1) return;
+        if(canvasDraggin){
+            canvasDraggin = false;
+            window.removeEventListener('mousemove', canvasDragger);
+            return;
+        }
         var selection = window.getSelection();
         var selected = selection.toString().trim();
 
@@ -141,7 +166,7 @@
         selectElement(highlighted[highlightedIndex]);
         elShow(highlighted[highlightedIndex]);
         updateHighlighter();
-        e.preventDefault()
+        e.preventDefault();
         return false;
     });
 
@@ -152,16 +177,22 @@
     }
 
     // Do the Highlighter bar on the right
-    var canvas = document.createElement("canvas");
+    canvas = document.createElement("canvas");
+
     canvas.setAttribute('id', 'highlighternoconflict');
     var canvasUpdating = false;
     document.body.appendChild(canvas);
     var ctx = canvas.getContext('2d');
 
     function generateHighlighter() {
+        var canvasHeight = window.innerHeight; // Height to make the bar
+        var heightRatio = canvasHeight / document.documentElement.getBoundingClientRect().height;
+
         canvas.style.display = 'block';
 
-        canvas.height = document.documentElement.getBoundingClientRect().height;
+        //         canvas.height = document.documentElement.getBoundingClientRect().height;
+        canvas.height = canvasHeight;
+
         canvas.width = 20;
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -169,15 +200,22 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "rgba(255, 181, 21, .3)";
+        var lastY = -1,
+            y = 0;
         highlighted.forEach(function(el, index) {
-            if (index == highlightedIndex) ctx.fillStyle = "rgba(0, 0, 255, 0.8)";
-            else ctx.fillStyle = "rgba(255, 181, 21, .3)";
             var box = el.getBoundingClientRect();
-            ctx.fillRect(0, window.scrollY + box.top, canvas.width, box.height);
+            y = (((window.scrollY + box.top) * heightRatio) + 0.5) | 0;
+            if (y == lastY && index != highlightedIndex) return;
+
+            if (index == highlightedIndex) ctx.fillStyle = "rgba(0, 0, 255, 1)";
+            else ctx.fillStyle = "rgba(255, 181, 21, 1)";
+            ctx.fillRect(0, y, canvas.width, (((box.height * heightRatio) + .5) | 0) || 1);
+            lastY = y;
         })
         ctx.fillStyle = "rgba(0,0,0,0.0)";
+        ctx.lineWidth = 1;
         ctx.strokeStyle = "rgba(0,200,200,0.85)";
-        ctx.strokeRect(0, window.scrollY, canvas.width, window.innerHeight);
+        ctx.strokeRect(0, ((window.scrollY * heightRatio) + 0.5) | 0, canvas.width, ((window.innerHeight * heightRatio) + .5) | 0);
         canvasUpdating = false;
     }
 
@@ -214,4 +252,4 @@
     }).toString().split('\n').slice(2, -2).join('\n').trim();
     document.body.appendChild(css);
 
-})();
+}); //)();

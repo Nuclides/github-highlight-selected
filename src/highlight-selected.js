@@ -1,43 +1,36 @@
-$(function() {
-    var codeArea = $(".js-file-line-container");
-    var fileLineContainer='.js-file-line-container';
-    var lastPage = location.href;
-    //     function wrapTextNodes(el){
-    //         console.log('wrapping',el)
-    //         el.find(".js-file-line").contents().filter(function () {
-    //             return this.nodeType == Node.TEXT_NODE;
-    //         }).each(function () {
-    //             $(this).replaceWith('<span>' + $(this).text() + '</span>');
-    //         });}
+(function() {
 
+    var fileLineContainer = '.js-file-line-container';
+    var lastPage = location.href;
+    var textNodes;
 
     function wrapTextNodes(query) {
-        // Why did all the gawd dam text selection stuff fail, urgggggghh....atleast this worked!
+        // Why did all the gawd dam text selection stuff fail, urgggggghh....atleast this worked!   http://cwestblog.com/2014/03/14/javascript-getting-all-text-nodes/
         function getTextNodesIn(elem, opt_fnFilter) {
-            var textNodes = [];
             if (elem) {
                 for (var nodes = elem.childNodes, i = nodes.length; i--;) {
                     var node = nodes[i],
                         nodeType = node.nodeType;
                     if (nodeType == 3) {
                         if (!opt_fnFilter || opt_fnFilter(node, elem)) {
-                            textNodes.push(node);
+                            if (node.nodeValue.trim() != '') textNodes.push(node);
                         }
                     } else if (nodeType == 1 || nodeType == 9 || nodeType == 11) {
-                        textNodes = textNodes.concat(getTextNodesIn(node, opt_fnFilter));
+                        getTextNodesIn(node, opt_fnFilter)
                     }
                 }
             }
-            return textNodes;
         }
         var el = document.querySelector(query);
         if (!el) return;
-        var results = getTextNodesIn(el);
-        results.forEach(function(node) {
+        textNodes = [];
+        getTextNodesIn(el);
+        textNodes.forEach(function(node, index) {
             var span = document.createElement('span');
             span.textContent = node.nodeValue;
-            if (node.parentNode) node.parentNode.replaceChild(span, node);
-        })
+            node.parentNode.replaceChild(span, node);
+            textNodes[index] = span;
+        });
     }
 
     wrapTextNodes(fileLineContainer);
@@ -46,7 +39,7 @@ $(function() {
     var whatToObserve = {
         childList: true,
         attributes: false,
-        subtree: true,
+        subtree: false,
         attributeOldValue: false /*, attributeFilter: []*/
     };
     var mutationObserver = new MutationObserver(function(mutationRecords) {
@@ -55,35 +48,35 @@ $(function() {
             wrapTextNodes(fileLineContainer);
         }
     });
-    mutationObserver.observe(document.querySelector('.file-navigation .breadcrumb'), whatToObserve);
+    mutationObserver.observe(document.querySelector('#js-repo-pjax-container'), whatToObserve);
 
     function restore() {
-        $(".ghs-highlight").removeClass("ghs-highlight");
-        $(".ghs-partial-highlight").contents().unwrap();
+        [].forEach.call(document.querySelectorAll(".ghs-highlight"), function(el) {
+            el.classList.remove("ghs-highlight");
+        });
+        [].forEach.call(document.querySelectorAll(".ghs-partial-highlight"), function(el) {
+            el.parentNode.replaceChild(el.childNodes[0], el);
+        });
     }
 
     function replaceAll(str, target, replacement) {
         return str.split(target).join(replacement);
     }
 
-    $("body").mouseup(function(e) {
+    document.body.addEventListener('mouseup', function(e) {
         restore();
-        var codeArea = $(fileLineContainer); // think the page updating killed this, this fixs that
-        var selection = $.trim(window.getSelection());
+        var selection = window.getSelection().toString().trim();
 
         if (selection) {
-            codeArea.find("span:not(:has(*))").each(function() {
-                if (this != e.target) {
-                    if ($(this).text() == selection) {
-                        $(this).addClass("ghs-highlight");
-                    }
-                    else if ($(this).text().indexOf(selection) > -1) {
-                        $(this).html(function(_, html) {
-                            return replaceAll(html, selection, '<span class="ghs-partial-highlight">' + selection + '</span>');
-                        });
+            textNodes.forEach(function(el) {
+                if (el != e.target) {
+                    if (el.textContent == selection) {
+                        el.classList.add("ghs-highlight");
+                    } else if (el.textContent.indexOf(selection) > -1) {
+                        el.innerHTML = replaceAll(el.innerHTML, selection, '<span class="ghs-partial-highlight">' + selection + '</span>');
                     }
                 }
             });
         }
     });
-});
+})();

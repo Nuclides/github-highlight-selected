@@ -182,7 +182,7 @@ window.addEventListener('load', function() {
     // Do the Highlighter bar on the right
     canvas = document.createElement("canvas");
 
-    canvas.setAttribute('id', 'highlighternoconflict');
+    canvas.setAttribute('id', 'ghs-bar');
     var canvasUpdating = false;
     document.body.appendChild(canvas);
     var ctx = canvas.getContext('2d');
@@ -236,24 +236,23 @@ window.addEventListener('load', function() {
     var css = document.createElement("style");
     css.type = "text/css";
     css.innerHTML = (function() {
-        /*
-.ghs-highlight, .ghs-partial-highlight {
+/*
+.ghs-highlight,
+.ghs-partial-highlight {
     border: 1px solid rgba(255, 181, 21, .6);
     background-color: rgba(255, 181, 21, .3);
 }
 
-#highlighternoconflict{
-    width:20px;
-    position:fixed;
-    top:0px;
-    bottom:0px;
-    right:0;
-    height:100%;
-    display:none;
+#ghs-bar {
+    width: 20px;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    right: 0;
+    height: 100%;
+    display: none;
 }
 */
     }).toString().split('\n').slice(2, -2).join('\n').trim();
     document.body.appendChild(css);
-
-}); //)();
-// })();
+});

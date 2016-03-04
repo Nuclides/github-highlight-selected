@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    var fileLineContainer = '.js-file-line-container';
+    var fileLineContainer = '.blob-wrapper';
     var lastPage = location.href;
     var textNodes = [];
     var highlighted = [];

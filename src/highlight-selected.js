@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    var fileLineContainer = '.blob-wrapper';
+    var container = '.blob-wrapper';
     var lastPage = location.href;
     var textNodes = [];
     var highlighted = [];
@@ -35,7 +35,7 @@ window.addEventListener('load', function() {
         textNodes.reverse();
     }
 
-    wrapTextNodes(fileLineContainer);
+    wrapTextNodes(container);
 
     // watch for page updating...
     var whatToObserve = {
@@ -47,7 +47,7 @@ window.addEventListener('load', function() {
     var mutationObserver = new MutationObserver(function(mutationRecords) {
         if (location.href != lastPage) {
             lastPage = location.href;
-            wrapTextNodes(fileLineContainer);
+            wrapTextNodes(container);
         }
     });
     mutationObserver.observe(document.querySelector('#js-repo-pjax-container'), whatToObserve);
@@ -114,7 +114,7 @@ window.addEventListener('load', function() {
             window.addEventListener('mousemove', canvasDragger);
             return;
         }
-        if (e.which != 1 || highlighted.length == 0) return;
+        if (e.which != 1 || highlighted.length === 0) return;
         restore();
         canvas.style.display = 'none';
     });
@@ -154,7 +154,7 @@ window.addEventListener('load', function() {
 
     window.addEventListener('keydown', function(e) {
 
-        if (highlighted.length == 0 || !e.ctrlKey) return;
+        if (highlighted.length === 0 || !e.ctrlKey) return;
 
         if (e.keyCode == 38) { // down key
             highlightedIndex--;

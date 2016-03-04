@@ -235,7 +235,7 @@ window.addEventListener('load', function() {
 /*
 .ghs-highlight,
 .ghs-partial-highlight {
-    border: 1px solid rgba(255, 181, 21, .6);
+    outline: 1px solid rgba(255, 181, 21, .6);
     background-color: rgba(255, 181, 21, .3);
 }
 

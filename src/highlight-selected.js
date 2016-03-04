@@ -15,7 +15,7 @@ window.addEventListener('load', function() {
                         nodeType = node.nodeType;
                     if (nodeType == 3) {
                         if (!opt_fnFilter || opt_fnFilter(node, elem)) {
-                            if (node.nodeValue.trim() != '') {
+                            if (node.nodeValue.trim() !== '') {
                                 var span = document.createElement('span');
                                 span.textContent = node.nodeValue;
                                 node.parentNode.replaceChild(span, node);
@@ -23,7 +23,7 @@ window.addEventListener('load', function() {
                             }
                         }
                     } else if (nodeType == 1 || nodeType == 9 || nodeType == 11) {
-                        getTextNodesIn(node, opt_fnFilter)
+                        getTextNodesIn(node, opt_fnFilter);
                     }
                 }
             }
@@ -60,7 +60,7 @@ window.addEventListener('load', function() {
                 parent.replaceChild(el.childNodes[0], el);
                 parent.normalize();
             }
-        })
+        });
         highlighted = [];
     }
 
@@ -128,7 +128,7 @@ window.addEventListener('load', function() {
 
     document.body.addEventListener('mouseup', function(e) {
         if (e.which != 1) return;
-        if(canvasDraggin){
+        if (canvasDraggin){
             canvasDraggin = false;
             window.removeEventListener('mousemove', canvasDragger);
             return;
@@ -145,7 +145,7 @@ window.addEventListener('load', function() {
                 } else if (el.textContent.indexOf(selected) > -1) {
                     if (el != e.target) splitReplace(el, selected);
                     else splitReplace(el, selected, Math.min(selection.anchorOffset, selection.focusOffset));
-                };
+                }
 
             });
             updateHighlighter();
@@ -154,7 +154,7 @@ window.addEventListener('load', function() {
 
     window.addEventListener('keydown', function(e) {
 
-        if (!highlighted.length > 0 || !e.ctrlKey) return;
+        if (highlighted.length == 0 || !e.ctrlKey) return;
 
         if (e.keyCode == 38) { // down key
             highlightedIndex--;
@@ -204,12 +204,12 @@ window.addEventListener('load', function() {
 
             if (index == highlightedIndex) ctx.fillStyle = "rgba(54, 149, 230, 1)";
             else ctx.fillStyle = "rgba(241, 209, 47, 1)";
-            ctx.fillRect(0, y, canvas.width, (((box.height * heightRatio) + .5) | 0) || 1);
+            ctx.fillRect(0, y, canvas.width, (((box.height * heightRatio) + 0.5) | 0) || 1);
             lastY = y;
-        })
+        });
 
-        var y1 = ((window.scrollY * heightRatio) + .5) | 0;
-        var y2 = ((canvasHeight * heightRatio) + .5) | 0;
+        var y1 = ((window.scrollY * heightRatio) + 0.5) | 0;
+        var y2 = ((canvasHeight * heightRatio) + 0.5) | 0;
         ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
         ctx.fillRect(0, y1, canvas.width, y2);
         ctx.lineWidth = 1;
@@ -219,7 +219,7 @@ window.addEventListener('load', function() {
     }
 
     function updateHighlighter() {
-        if (highlighted.length && canvasUpdating == false) {
+        if (highlighted.length && canvasUpdating === false) {
             canvasUpdating = true;
             window.requestAnimationFrame(generateHighlighter);
         }

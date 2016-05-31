@@ -28,10 +28,14 @@ window.addEventListener('load', function() {
                 }
             }
         }
-        var el = document.querySelector(query);
-        if (!el) return;
+        var elements = document.querySelectorAll(query);
+        if (elements.length == 0) return;
         textNodes = [];
-        getTextNodesIn(el);
+
+        for (var el of elements) {
+            getTextNodesIn(el);
+        }
+
         textNodes.reverse();
     }
 

@@ -1,5 +1,5 @@
 window.addEventListener('load', function() {
-    var container = '.blob-wrapper';
+    var container = '.blob-wrapper, .js-blob-wrapper';
     var lastPage = location.href;
     var textNodes = [];
     var highlighted = [];
@@ -39,6 +39,16 @@ window.addEventListener('load', function() {
         textNodes.reverse();
     }
 
+    function observePullRequestDiffs(mutationObserverOptions) {
+        var diffExpandMutationObserver = new MutationObserver(function(mutationRecords) {
+            wrapTextNodes(container);
+        });
+        var diffTables = document.querySelectorAll('.diff-table > tbody');
+        for (var diffTable of diffTables) {
+            diffExpandMutationObserver.observe(diffTable, mutationObserverOptions);
+        }
+    }
+
     wrapTextNodes(container);
 
     // watch for page updating...
@@ -52,9 +62,11 @@ window.addEventListener('load', function() {
         if (location.href != lastPage) {
             lastPage = location.href;
             wrapTextNodes(container);
+            observePullRequestDiffs(whatToObserve);
         }
     });
     mutationObserver.observe(document.querySelector('#js-repo-pjax-container'), whatToObserve);
+    observePullRequestDiffs(whatToObserve);
 
     function restore() {
         highlighted.forEach(function(el) {

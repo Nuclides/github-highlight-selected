@@ -1,6 +1,6 @@
 {
   "name": "GitHub Highlight Selected",
-  "version": "2.1",
+  "version": "2.2",
   "manifest_version": 2,
 
   "description": "Highlight selected word in GitHub source view like Sublime Text",

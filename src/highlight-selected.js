@@ -65,7 +65,9 @@ window.addEventListener('load', function() {
             observePullRequestDiffs(whatToObserve);
         }
     });
-    mutationObserver.observe(document.querySelector('#js-repo-pjax-container'), whatToObserve);
+    var codeContainer = document.querySelector('#js-repo-pjax-container');
+    if (!codeContainer) codeContainer = document.querySelector('#gist-pjax-container'); // for gists
+    mutationObserver.observe(codeContainer, whatToObserve);
     observePullRequestDiffs(whatToObserve);
 
     function restore() {

@@ -67,6 +67,7 @@ window.addEventListener('load', function() {
     });
     var codeContainer = document.querySelector('#js-repo-pjax-container');
     if (!codeContainer) codeContainer = document.querySelector('#gist-pjax-container'); // for gists
+    if (!codeContainer) codeContainer = document.querySelector('main'); // It looks that GitHub has updated the DOM. Using `main` as a fallback.
     mutationObserver.observe(codeContainer, whatToObserve);
     observePullRequestDiffs(whatToObserve);
 
